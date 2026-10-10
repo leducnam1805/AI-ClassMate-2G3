@@ -1,0 +1,83 @@
+Vi phạm cờ đỏ: -10
+Đi lung tung : -2
+Nói chuyện: -1
+Nói leo:-1 
+Đánh lọn: -10
+Không mang sách vở, dụng cụ học tập: -1
+Không tập trung giờ học: -1
+
+Điểm cộng: 
+phát biểu +1
+Điểm cộng vở +1
+Tham gia dọn vệ sinh: +1
+Giúp đỡ bạn: +1
+Tham gia trò chơi học tập: +1
+
+Tổng kết điểm nếu 10 điểm được 1 món quà, lấy tổng điểm chia 10 = phần quà học sinh được nhận cuối tháng
+
+Kèm lời nhận xét cuối tháng cho mỗi học sinh
+
+
+
+AI ClassMate 2G3 – Trợ lý theo dõi và phát huy sự tiến bộ của học sinh.
+
+=================== MÔ HÌNH HOẠT ĐỘNG ĐỀ XUẤT ============
+Mô hình hoạt động đề xuất
+Bước 1. Giáo viên ghi nhận thi đua
+Điểm cộng, điểm trừ, sự việc quan sát được và biểu hiện tiến bộ
+
+
+Bước 2. Bảng theo dõi tự động tổng hợp
+Tổng điểm, quà thưởng, xu hướng theo tuần và tháng
+
+
+Bước 3. AI phân tích và đề xuất
+Nhận diện điểm mạnh, nội dung cần rèn luyện và biện pháp hỗ trợ
+
+
+Bước 4. Giáo viên kiểm duyệt và thực hiện
+Nhận xét cuối tháng, kế hoạch giáo dục và phối hợp phụ huynh khi cần
+
+
+Điểm khác biệt của mô hình này là không dừng ở việc tính điểm thi đua. Hệ thống hướng tới một vòng lặp liên tục:
+Ghi nhận → Phân tích → Hỗ trợ → Theo dõi tiến bộ → Điều chỉnh biện pháp giáo dục.
+
+
+3. Sáu chức năng tôi đề xuất xây dựng
+Chức năng	Kết quả giáo viên nhận được
+1. Quản lý thi đua	Ghi nhận điểm cộng, điểm trừ và tổng hợp tự động
+2. Bảng điều hành lớp	Theo dõi tình hình chung của lớp theo tuần, tháng
+3. Phân tích tiến bộ	Nhận diện sự thay đổi của từng học sinh qua nhiều kỳ
+4. Trợ lý biện pháp giáo dục	AI gợi ý cách hỗ trợ dựa trên sự việc thực tế
+5. Nhận xét cuối tháng bằng AI	Dự thảo nhận xét cá nhân hóa dựa trên minh chứng
+6. Kế hoạch chủ nhiệm	Tạo mục tiêu rèn luyện, hoạt động lớp và kế hoạch phối hợp với phụ huynh
+
+Ứng dụng trí tuệ nhân tạo xây dựng mô hình hỗ trợ công tác chủ nhiệm lớp nhằm nâng cao hiệu quả theo dõi, giáo dục và phát huy sự tiến bộ của học sinh tiểu học.
+
+3. Vấn đề nghiên cứu cần giải quyết
+Tôi đề xuất bốn câu hỏi nghiên cứu:
+1. Có thể xây dựng một quy trình kết hợp bảng theo dõi số và AI để giảm công sức tổng hợp thi đua, nhận xét cuối tháng không?
+2. AI có thể hỗ trợ giáo viên tạo nhận xét cá nhân hóa dựa trên các minh chứng đã ghi nhận như thế nào?
+3. Việc sử dụng mô hình có giúp giáo viên theo dõi sự tiến bộ của học sinh có hệ thống hơn so với chỉ xem tổng điểm thi đua không?
+4. Mô hình có thể được chuẩn hóa để giáo viên chủ nhiệm khác sử dụng mà vẫn bảo đảm tính chính xác, công bằng và an toàn dữ liệu không?
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,17 @@
+{
+  "project": "AI ClassMate 2G3",
+  "version": "UI Design v1",
+  "files": [
+    "README.md",
+    "00_UI_Design_Convention.md",
+    "01_Dashboard.md",
+    "02_Student_List.md",
+    "03_Student_Profile.md",
+    "04_Behavior_Event_Management.md",
+    "05_Data_Review.md",
+    "06_Monthly_Summary.md",
+    "07_AI_Assistant.md",
+    "08_Settings_and_Criteria.md"
+  ],
+  "note": "Review all 'CHỜ XÁC NHẬN' notes and cross-check API paths/schema against the approved API Design before implementation."
+}

@@ -1,0 +1,15 @@
+Lộ trình code đề xuất
+Bước 1 — Chuẩn hóa dữ liệu
+Kiểm tra Excel, thống nhất quy tắc cộng trừ và xác định công thức tính quà.
+
+
+Bước 2 — Code quản lý thi đua
+Nhập sự kiện, tính điểm tự động, phát hiện lỗi và tổng hợp tháng.
+
+
+Bước 3 — Tích hợp AI
+Tạo nhận xét cuối tháng, đề xuất biện pháp giáo dục và kế hoạch theo dõi tiến bộ.
+
+
+Bước 4 — Dashboard và báo cáo
+Hoàn thiện giao diện, xuất báo cáo, kiểm thử và chuẩn bị trình diễn.

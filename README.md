@@ -118,7 +118,32 @@ cd AI-ClassMate-2G3
 
 ---
 
-### Bước 2: Khởi chạy Backend (Python FastAPI — Cổng 8000)
+### 🐳 Cách 1: Khởi chạy nhanh bằng Docker (Khuyến nghị cho máy khác clone về)
+
+Nếu máy tính đã cài đặt **Docker Desktop** (hoặc Docker Engine & Compose), bạn chỉ cần chạy **một lệnh duy nhất** mà không cần cài đặt Python hay Node.js:
+
+```bash
+# Khởi động cả Backend và Frontend cùng lúc
+docker compose up --build
+```
+
+Hoặc chạy ngầm dưới nền:
+```bash
+docker compose up -d --build
+```
+
+Để dừng các service:
+```bash
+docker compose down
+```
+
+- **Frontend:** `http://localhost:3000`
+- **Backend API:** `http://localhost:8000`
+- **API Docs (Swagger):** `http://localhost:8000/docs`
+
+---
+
+### 💻 Cách 2: Cài đặt và khởi chạy thủ công
 
 ```bash
 # Di chuyển vào thư mục backend

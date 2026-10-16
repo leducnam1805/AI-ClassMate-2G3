@@ -2,9 +2,13 @@ import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import declarative_base, sessionmaker
 
-# Database file in backend root
-DB_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-DB_PATH = os.path.join(DB_DIR, "classmate.db")
+# Database file in backend root or environment variable
+DEFAULT_DB_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+DB_PATH = os.getenv("SQLITE_DB_PATH", os.path.join(DEFAULT_DB_DIR, "classmate.db"))
+
+# Ensure directory for DB exists
+os.makedirs(os.path.dirname(os.path.abspath(DB_PATH)), exist_ok=True)
+
 SQLALCHEMY_DATABASE_URL = f"sqlite:///{DB_PATH}"
 
 engine = create_engine(

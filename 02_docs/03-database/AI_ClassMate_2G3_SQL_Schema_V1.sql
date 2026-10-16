@@ -241,17 +241,25 @@ CREATE INDEX IF NOT EXISTS idx_review_issues_open_severity
 CREATE INDEX IF NOT EXISTS idx_audit_logs_entity
     ON audit_logs (entity_type, entity_id, created_at DESC);
 
--- Seed only criteria whose scoring was explicitly confirmed.
--- Criteria still awaiting confirmation are intentionally not seeded here.
+-- Seed confirmed criteria based on SRS v1.0 (ACM2G3-SRS-V1.0).
 INSERT INTO behavior_criteria
     (criterion_code, criterion_name, category, points, rule_status, description)
 VALUES
-    ('RED_FLAG', 'Vi phạm cờ đỏ', 'NEGATIVE', -10, 'CONFIRMED',
-     'Mức trừ điểm đã được giáo viên xác nhận: -10 điểm.'),
-    ('TALKING', 'Nói chuyện', 'NEGATIVE', -1, 'CONFIRMED',
-     'Nếu cùng một lần ghi nhận có cả nói chuyện và nói leo, mỗi hành vi tính -1 điểm.'),
-    ('TALKING_OUT_OF_TURN', 'Nói leo', 'NEGATIVE', -1, 'CONFIRMED',
-     'Nếu cùng một lần ghi nhận có cả nói chuyện và nói leo, mỗi hành vi tính -1 điểm.')
+    -- 8 Tiêu chí trừ (P-01 to P-08)
+    ('RED_FLAG', 'Vi phạm cờ đỏ', 'NEGATIVE', -10, 'CONFIRMED', 'Trừ 10 điểm theo biên bản sao đỏ/toàn trường.'),
+    ('PHYSICAL_FIGHT', 'Xô xát / Đánh bạn', 'NEGATIVE', -10, 'CONFIRMED', 'Hành vi xô xát, cần trao đổi riêng và phối hợp phụ huynh.'),
+    ('LEAVING_SEAT', 'Rời vị trí, đi lại tự do trong giờ', 'NEGATIVE', -2, 'CONFIRMED', 'Rời vị trí, đi lung tung trong lớp.'),
+    ('TALKING', 'Nói chuyện riêng', 'NEGATIVE', -1, 'CONFIRMED', 'Nói chuyện riêng làm ảnh hưởng xung quanh.'),
+    ('TALKING_OUT_OF_TURN', 'Tự ý phát biểu khi chưa xin phép', 'NEGATIVE', -1, 'CONFIRMED', 'Nói leo, cắt lời cô giáo/bạn.'),
+    ('MISSING_ITEMS', 'Thiếu đồ dùng, sách vở học tập', 'NEGATIVE', -1, 'CONFIRMED', 'Quên sách, vở, bảng con hoặc dụng cụ.'),
+    ('DISTRACTED', 'Mất tập trung trong giờ học', 'NEGATIVE', -1, 'CONFIRMED', 'Mất tập trung, làm việc riêng trong tiết học (-1/lần).'),
+    ('WRITING_AHEAD', 'Viết trước vở tập viết khi chưa hướng dẫn', 'NEGATIVE', -1, 'CONFIRMED', 'Tự ý viết trước quy trình giảng dạy.'),
+    -- 5 Tiêu chí cộng (B-01 to B-05)
+    ('ACTIVE_SPEAKING', 'Hăng hái phát biểu xây dựng bài', 'POSITIVE', 1, 'CONFIRMED', 'Khích lệ sự tự tin phát biểu.'),
+    ('CLEAN_NOTEBOOK', 'Vở sạch, chữ đẹp, làm bài tốt', 'POSITIVE', 1, 'CONFIRMED', 'Điểm cộng vở sạch đẹp.'),
+    ('CLEANING_HELP', 'Tích cực tham gia vệ sinh, trực nhật', 'POSITIVE', 1, 'CONFIRMED', 'Giáo viên/tổ trưởng ghi nhận trực nhật.'),
+    ('HELPING_FRIENDS', 'Giúp đỡ bạn bè trong học tập / sinh hoạt', 'POSITIVE', 1, 'CONFIRMED', 'Giáo dục lòng nhân ái, sẻ chia.'),
+    ('LEARNING_GAMES', 'Tích cực tham gia trò chơi học tập', 'POSITIVE', 1, 'CONFIRMED', 'Hăng hái tham gia hoạt động trò chơi.')
 ON CONFLICT (criterion_code) DO NOTHING;
 
 COMMIT;

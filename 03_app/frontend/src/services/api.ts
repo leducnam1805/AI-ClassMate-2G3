@@ -111,3 +111,25 @@ export async function resolveIssueInBackend(issueId: string, resolved: boolean) 
     console.error('Failed to resolve issue in backend', err);
   }
 }
+
+export async function fetchCriteriaFromBackend() {
+  try {
+    const res = await fetch(`${API_BASE_URL}/criteria`, { cache: 'no-store' });
+    if (!res.ok) throw new Error('Backend criteria returned error');
+    return await res.json();
+  } catch (err) {
+    console.warn('Backend criteria fetch failed:', err);
+    return null;
+  }
+}
+
+export async function fetchResearchMetricsFromBackend() {
+  try {
+    const res = await fetch(`${API_BASE_URL}/reports/research-metrics`, { cache: 'no-store' });
+    if (!res.ok) throw new Error('Backend metrics returned error');
+    return await res.json();
+  } catch (err) {
+    console.warn('Backend metrics fetch failed:', err);
+    return null;
+  }
+}

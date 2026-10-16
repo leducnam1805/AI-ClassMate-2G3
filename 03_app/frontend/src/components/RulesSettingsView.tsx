@@ -1,8 +1,24 @@
 'use strict';
-import React from 'react';
-import { Settings, ShieldCheck, AlertCircle, FileCheck, Scale, CheckCircle2 } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Settings, ShieldCheck, AlertCircle, FileCheck, Scale, CheckCircle2, Database, Award } from 'lucide-react';
+import { fetchCriteriaFromBackend } from '../services/api';
+import { Criterion } from '../types';
 
 export const RulesSettingsView: React.FC = () => {
+  const [criteria, setCriteria] = useState<Criterion[]>([]);
+  const [loadingCriteria, setLoadingCriteria] = useState<boolean>(true);
+
+  useEffect(() => {
+    fetchCriteriaFromBackend().then((data) => {
+      if (data && data.length > 0) {
+        setCriteria(data);
+      }
+      setLoadingCriteria(false);
+    }).catch(() => {
+      setLoadingCriteria(false);
+    });
+  }, []);
+
   const confirmedRules = [
     {
       code: 'BR-001',
@@ -59,23 +75,32 @@ export const RulesSettingsView: React.FC = () => {
       desc: 'Hệ thống phát hiện và cảnh báo bản ghi nghi trùng lặp, không tự xóa khi chưa có xác nhận.',
       status: 'APPROVED',
       impact: 'Bảo vệ quyền lợi của học sinh'
+    },
+    {
+      code: 'BR-009',
+      title: 'Chuẩn hóa danh mục 13 tiêu chí thi đua (8 trừ, 5 cộng)',
+      desc: 'Chính thức hóa tiêu chí Viết trước vở tập viết (-1), Xô xát/Đánh bạn (-10) và mức Mất tập trung (-1/lần nhắc nhở).',
+      status: 'APPROVED',
+      impact: 'Khớp 100% dữ liệu thực tế và chuẩn hóa nề nếp lớp 2'
+    },
+    {
+      code: 'BR-010',
+      title: 'Bảo vệ tâm lý học sinh tiểu học đối với điểm âm',
+      desc: 'Tổng điểm âm bảo lưu kín trong hồ sơ cá nhân và chuyển thành mục tiêu rèn luyện tháng tới; không công khai bảng tin lớp.',
+      status: 'APPROVED',
+      impact: 'Tuân thủ đạo đức sư phạm và tâm lý học lứa tuổi'
     }
   ];
 
   const pendingRules = [
-    {
-      title: 'Phân loại mức độ hành vi "Không tập trung giờ học"',
-      desc: 'Quy định ghi -1 điểm, nhưng trong Excel tháng 9 ghi -3 điểm. Đề xuất: Phân biệt giữa mất tập trung nhắc nhở (-1) và cố tình gây phân tâm (-3).',
-      status: 'PENDING'
-    },
     {
       title: 'Tiêu chuẩn chính thức danh hiệu "Xuất sắc tháng"',
       desc: 'Hiện tại lấy theo đề xuất của GVCN (An, Hiệp, Ý). Cần chuẩn hóa tiêu chí: Điểm tổng >= 25, không vi phạm cờ đỏ, vở sạch chữ đẹp.',
       status: 'PENDING'
     },
     {
-      title: 'Chính thức hóa tiêu chí "Viết trước vở tập viết"',
-      desc: 'Trong Excel ghi -1 điểm nhưng chưa có trong văn bản quy chế ban đầu.',
+      title: 'Đơn vị tính điểm cộng tối đa trong ngày/tuần',
+      desc: 'Đề xuất giới hạn số lần cộng điểm phát biểu trong 1 buổi học để tạo cơ hội đồng đều cho mọi học sinh.',
       status: 'PENDING'
     }
   ];
@@ -96,11 +121,83 @@ export const RulesSettingsView: React.FC = () => {
         </div>
       </div>
 
+      {/* Database Criteria Table - Real SQLite Data */}
+      <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs space-y-3">
+        <div className="flex items-center justify-between">
+          <h2 className="text-sm font-bold text-slate-800 flex items-center">
+            <Database className="w-4 h-4 mr-1.5 text-indigo-600" />
+            Danh Mục Tiêu Chí Thi Đua (Dữ Liệu Thật từ Database SQLite — Bảng criteria):
+          </h2>
+          <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-indigo-50 text-indigo-700 border border-indigo-200">
+            {criteria.length > 0 ? `${criteria.length} Tiêu chí Đã nạp từ DB` : 'Dữ liệu chuẩn hóa SRS v1.0'}
+          </span>
+        </div>
+
+        {loadingCriteria ? (
+          <div className="p-4 text-xs text-slate-500">Đang tải danh mục tiêu chí từ Database...</div>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-xs">
+              <thead className="bg-slate-50 text-slate-600 border-b border-slate-200">
+                <tr>
+                  <th className="py-2.5 px-3">Mã tiêu chí</th>
+                  <th className="py-2.5 px-3">Tên hành vi thi đua</th>
+                  <th className="py-2.5 px-3 text-center">Phân loại</th>
+                  <th className="py-2.5 px-3 text-center">Mức điểm</th>
+                  <th className="py-2.5 px-3 text-center">Trạng thái CSDL</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-100">
+                {(criteria.length > 0 ? criteria : [
+                  { id: 1, code: 'CO_DO', name: 'Vi phạm cờ đỏ', category: 'PENALTY', default_points: 10 },
+                  { id: 2, code: 'DANH_LON', name: 'Xô xát / Đánh bạn', category: 'PENALTY', default_points: 10 },
+                  { id: 3, code: 'DI_LUNG_TUNG', name: 'Đi lung tung trong lớp', category: 'PENALTY', default_points: 2 },
+                  { id: 4, code: 'NOI_CHUYEN', name: 'Nói chuyện riêng trong giờ học', category: 'PENALTY', default_points: 1 },
+                  { id: 5, code: 'NOI_LEO', name: 'Nói leo trong giờ học', category: 'PENALTY', default_points: 1 },
+                  { id: 6, code: 'QUEN_SACH_VO', name: 'Không mang sách vở, dụng cụ học tập', category: 'PENALTY', default_points: 1 },
+                  { id: 7, code: 'KHONG_TAP_TRUNG', name: 'Không tập trung giờ học', category: 'PENALTY', default_points: 1 },
+                  { id: 8, code: 'VIET_TRUOC_VO', name: 'Viết trước vở tập viết khi chưa hướng dẫn', category: 'PENALTY', default_points: 1 },
+                  { id: 9, code: 'PHAT_BIEU', name: 'Phát biểu xây dựng bài', category: 'BONUS', default_points: 1 },
+                  { id: 10, code: 'DIEM_CONG_VO', name: 'Điểm cộng vở sạch chữ đẹp', category: 'BONUS', default_points: 1 },
+                  { id: 11, code: 'DON_VE_SINH', name: 'Tham gia dọn vệ sinh', category: 'BONUS', default_points: 1 },
+                  { id: 12, code: 'GIUP_BAN', name: 'Giúp đỡ bạn trong học tập', category: 'BONUS', default_points: 1 },
+                  { id: 13, code: 'TRO_CHOI', name: 'Tham gia trò chơi học tập', category: 'BONUS', default_points: 1 },
+                ] as Criterion[]).map((crit) => (
+                  <tr key={crit.id} className="hover:bg-slate-50/60 transition-colors">
+                    <td className="py-2 px-3 font-mono text-[11px] text-slate-500">{crit.code}</td>
+                    <td className="py-2 px-3 font-medium text-slate-900">{crit.name}</td>
+                    <td className="py-2 px-3 text-center">
+                      <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
+                        crit.category === 'BONUS' 
+                          ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' 
+                          : 'bg-rose-50 text-rose-700 border border-rose-200'
+                      }`}>
+                        {crit.category === 'BONUS' ? 'Điểm cộng' : 'Điểm trừ'}
+                      </span>
+                    </td>
+                    <td className="py-2 px-3 text-center font-bold">
+                      <span className={crit.category === 'BONUS' ? 'text-emerald-600' : 'text-rose-600'}>
+                        {crit.category === 'BONUS' ? `+${crit.default_points}` : `-${crit.default_points}`}
+                      </span>
+                    </td>
+                    <td className="py-2 px-3 text-center">
+                      <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-800">
+                        CONFIRMED
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
+
       {/* Confirmed Rules Grid */}
       <div className="space-y-3">
         <h2 className="text-sm font-bold text-slate-800 flex items-center">
           <ShieldCheck className="w-4 h-4 mr-1.5 text-emerald-600" />
-          8 Quy Tắc Đã Phê Duyệt Chính Thức (BR-001 Đến BR-008):
+          10 Quy Tắc Nghiệp Vụ Đã Phê Duyệt Chính Thức (BR-001 Đến BR-010):
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -136,7 +233,7 @@ export const RulesSettingsView: React.FC = () => {
           Các Quy Tắc Đang Khảo Sát Mở Rộng (Nghiên Cứu Giai Đoạn 2):
         </h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {pendingRules.map((pr, i) => (
             <div key={i} className="p-4 rounded-xl bg-amber-50/50 border border-amber-200/80 shadow-xs">
               <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-100 text-amber-800">
@@ -153,3 +250,4 @@ export const RulesSettingsView: React.FC = () => {
     </div>
   );
 };
+

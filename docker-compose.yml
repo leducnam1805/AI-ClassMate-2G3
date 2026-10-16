@@ -1,0 +1,33 @@
+services:
+  backend:
+    build:
+      context: ./03_app/backend
+      dockerfile: Dockerfile
+    container_name: classmate-backend
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    volumes:
+      # Giữ lại SQLite database khi container restart
+      - backend-data:/app/data
+    environment:
+      - PYTHONUNBUFFERED=1
+      - SQLITE_DB_PATH=/app/data/classmate.db
+
+  frontend:
+    build:
+      context: ./03_app/frontend
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_API_URL: http://localhost:8000/api
+    container_name: classmate-frontend
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:8000/api
+
+volumes:
+  backend-data:

@@ -32,7 +32,7 @@ def seed_database():
     db.commit()
     db.refresh(cls)
 
-    # 2. Criteria
+    # 2. Criteria (Chuẩn hóa 13 tiêu chí theo SRS v1.0)
     criteria_list = [
         CriterionModel(code="PHAT_BIEU", name="Phát biểu xây dựng bài", category="BONUS", default_points=1),
         CriterionModel(code="DIEM_CONG_VO", name="Điểm cộng vở sạch chữ đẹp", category="BONUS", default_points=1),
@@ -43,9 +43,10 @@ def seed_database():
         CriterionModel(code="DI_LUNG_TUNG", name="Đi lung tung trong lớp", category="PENALTY", default_points=2),
         CriterionModel(code="NOI_CHUYEN", name="Nói chuyện riêng trong giờ học", category="PENALTY", default_points=1),
         CriterionModel(code="NOI_LEO", name="Nói leo trong giờ học", category="PENALTY", default_points=1),
-        CriterionModel(code="DANH_LON", name="Đánh bạn (Đánh lọn)", category="PENALTY", default_points=10),
+        CriterionModel(code="DANH_LON", name="Xô xát / Đánh bạn", category="PENALTY", default_points=10),
         CriterionModel(code="QUEN_SACH_VO", name="Không mang sách vở, dụng cụ học tập", category="PENALTY", default_points=1),
         CriterionModel(code="KHONG_TAP_TRUNG", name="Không tập trung giờ học", category="PENALTY", default_points=1),
+        CriterionModel(code="VIET_TRUOC_VO", name="Viết trước vở tập viết khi chưa hướng dẫn", category="PENALTY", default_points=1),
     ]
     db.add_all(criteria_list)
     db.commit()

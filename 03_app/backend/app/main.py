@@ -5,10 +5,10 @@ from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 
 from .database import engine, Base, get_db
-from .models import StudentModel, MonthlySummaryModel, AICommentModel, ReviewIssueModel
+from .models import StudentModel, MonthlySummaryModel, AICommentModel, ReviewIssueModel, CriterionModel
 from .schemas import (
     StudentListResponse, StudentUpdatePayload, GenerateDraftRequest,
-    BatchApproveRequest, ResolveIssueRequest
+    BatchApproveRequest, ResolveIssueRequest, CriterionSchema
 )
 from .seed import seed_database
 from .services.audit_service import calculate_audited_scores, audit_student_data
@@ -42,6 +42,11 @@ def health_check():
         "database": "SQLite (classmate.db)",
         "version": "1.0.0"
     }
+
+@app.get("/api/criteria", response_model=List[CriterionSchema])
+def get_criteria(db: Session = Depends(get_db)):
+    """Trả về 13 tiêu chí thi đua đã được lưu trong cơ sở dữ liệu SQLite"""
+    return db.query(CriterionModel).order_by(CriterionModel.id.asc()).all()
 
 @app.get("/api/students", response_model=List[StudentListResponse])
 def get_students(db: Session = Depends(get_db)):

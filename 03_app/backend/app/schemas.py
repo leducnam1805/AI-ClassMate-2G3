@@ -13,6 +13,18 @@ class AuditIssueSchema(BaseModel):
     class Config:
         from_attributes = True
 
+class CriterionSchema(BaseModel):
+    id: int
+    code: str
+    name: str
+    category: str
+    default_points: int
+    description: Optional[str] = None
+    is_official: bool
+
+    class Config:
+        from_attributes = True
+
 class StudentListResponse(BaseModel):
     id: int
     student_code: str

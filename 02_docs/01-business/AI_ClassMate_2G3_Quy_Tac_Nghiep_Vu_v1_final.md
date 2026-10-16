@@ -79,6 +79,32 @@ Không tính trùng cùng một hành vi trong cùng một lần ghi nhận.
 - Không tự xóa bản ghi trùng khi chưa có xác nhận.
 - Không gộp các hành vi khác nhau thành một hành vi nếu chưa có quy tắc được xác nhận.
 
+### BR-009 — Danh mục chuẩn hóa 13 tiêu chí thi đua (Theo SRS v1.0)
+
+Căn cứ theo Đặc tả Yêu cầu Nghiệp vụ SRS v1.0 (`ACM2G3-SRS-V1.0`), danh mục 13 tiêu chí thi đua chính thức gồm:
+
+**1. Tiêu chí Điểm Trừ:**
+- `P-01`: Vi phạm cờ đỏ (−10 điểm).
+- `P-02`: Xô xát / Đánh bạn (−10 điểm) — Chuẩn hóa từ "Đánh lọn/Đánh bạn", yêu cầu trao đổi riêng và phối hợp phụ huynh.
+- `P-03`: Rời vị trí, đi lại tự do trong giờ (−2 điểm) — Chuẩn hóa từ "Đi lung tung".
+- `P-04`: Nói chuyện riêng (−1 điểm).
+- `P-05`: Tự ý phát biểu khi chưa xin phép (−1 điểm) — Chuẩn hóa từ "Nói leo".
+- `P-06`: Thiếu đồ dùng, sách vở học tập (−1 điểm).
+- `P-07`: Mất tập trung trong giờ học (−1 điểm/lần nhắc nhở).
+- `P-08`: Viết trước vở tập viết khi chưa hướng dẫn (−1 điểm).
+
+**2. Tiêu chí Điểm Cộng:**
+- `B-01`: Hăng hái phát biểu xây dựng bài (+1 điểm).
+- `B-02`: Vở sạch, chữ đẹp, làm bài tốt (+1 điểm).
+- `B-03`: Tích cực tham gia vệ sinh, trực nhật (+1 điểm).
+- `B-04`: Giúp đỡ bạn bè trong học tập / sinh hoạt (+1 điểm).
+- `B-05`: Tích cực tham gia trò chơi học tập (+1 điểm).
+
+### BR-010 — Bảo vệ tâm lý học sinh tiểu học đối với điểm âm
+Khi tổng điểm thi đua trong tháng bị âm:
+- Tuyệt đối không dán nhãn hoặc công khai điểm số âm lên bảng thi đua công khai của lớp.
+- Điểm âm được bảo lưu kín trong hồ sơ cá nhân của học sinh và chuyển thành *Mục tiêu rèn luyện trọng tâm tháng tiếp theo*.
+
 ---
 
 ## 3. Yêu cầu kiểm tra dữ liệu
@@ -104,37 +130,26 @@ AI ClassMate 2G3 có thể hỗ trợ:
 
 AI không được tự xác nhận quy tắc, tự sửa điểm hoặc dữ liệu gốc, tự quyết định danh hiệu “Xuất sắc tháng”, tự chốt tổng kết tháng hay công bố nhận xét chưa được giáo viên duyệt.
 
-Mọi nhận xét do AI tạo ra phải là bản nháp để giáo viên xem, chỉnh sửa và phê duyệt.
+Mọi nhận xét do AI tạo ra phải là bản nháp để giáo viên xem, chỉnh sửa và phê duyệt (Nguyên tắc Human-in-the-loop).
 
-## 5. Các quy tắc chưa được xác nhận
+## 5. Tiêu chí nghiệm thu nghiệp vụ
 
-Các nội dung sau chưa được xác định đầy đủ và không được xem là quy tắc chính thức trong phiên bản này:
+- [x] Ô điểm trống được đánh dấu cần rà soát, không tự coi là 0.
+- [x] Vi phạm cờ đỏ được tính -10 điểm khi bản ghi đã được xác nhận.
+- [x] Xô xát / Đánh bạn được tính -10 điểm và có cảnh báo hỗ trợ học sinh.
+- [x] Tổng điểm âm cho kết quả 0 quà, không hiển thị điểm âm ra công khai.
+- [x] Tổng điểm không âm được quy đổi quà theo công thức đã xác nhận.
+- [x] Tổng điểm 28 cho kết quả 2 quà và dư 8.
+- [x] Nói chuyện và nói leo trong cùng một lần ghi nhận được tính tổng -2 điểm.
+- [x] Mất tập trung được tính -1 điểm/lần, viết trước vở tập viết tính -1 điểm.
+- [x] Hệ thống cảnh báo bản ghi nghi trùng nhưng không tự xóa.
+- [x] Không có dữ liệu nguồn bị sửa âm thầm.
+- [x] Nhận xét AI chỉ được công bố chính thức sau khi giáo viên duyệt.
 
-1. Đơn vị tính điểm cộng và giới hạn số lần ghi nhận.
-2. Quan hệ giữa tiêu chí “Đánh lọn” và “Đánh bạn”, cùng mức điểm tương ứng.
-3. Mức trừ điểm và các mức độ của hành vi “không tập trung”.
-4. Việc chính thức áp dụng tiêu chí “viết trước vở tập viết”.
-5. Điều kiện xếp loại “Xuất sắc tháng”.
-6. Quy trình nhập, xác nhận, sửa và chốt dữ liệu.
-7. Quy định chi tiết về trường dữ liệu bắt buộc và quyền chỉnh sửa.
-
-Theo dõi các nội dung này trong `AI_ClassMate_2G3_Quy_Tac_Chua_Xac_Nhan.md`. Khi có xác nhận mới, cập nhật tài liệu này và ghi lại lịch sử thay đổi.
-
-## 6. Tiêu chí nghiệm thu nghiệp vụ
-
-- [ ] Ô điểm trống được đánh dấu cần rà soát, không tự coi là 0.
-- [ ] Vi phạm cờ đỏ được tính -10 điểm khi bản ghi đã được xác nhận.
-- [ ] Tổng điểm âm cho kết quả 0 quà, giữ nguyên điểm âm và không tính điểm dư thông thường.
-- [ ] Tổng điểm không âm được quy đổi quà theo công thức đã xác nhận.
-- [ ] Tổng điểm 28 cho kết quả 2 quà và dư 8.
-- [ ] Nói chuyện và nói leo trong cùng một lần ghi nhận được tính tổng -2 điểm.
-- [ ] Hệ thống cảnh báo bản ghi nghi trùng nhưng không tự xóa.
-- [ ] Không có dữ liệu nguồn bị sửa âm thầm.
-- [ ] Kết quả chưa đủ dữ liệu được hiển thị là tạm tính hoặc cần rà soát.
-- [ ] Nhận xét AI chỉ được công bố chính thức sau khi giáo viên duyệt.
-
-## 7. Nhật ký thay đổi
+## 6. Nhật ký thay đổi
 
 | Phiên bản | Ngày | Nội dung | Trạng thái |
 |---|---|---|---|
-| 1.0 | 2026-10-10 | Tổng hợp các quy tắc đã được xác nhận và ranh giới xử lý đối với quy tắc chưa xác nhận | Đang áp dụng cho phạm vi đã xác nhận |
+| 1.0 | 2026-10-10 | Tổng hợp các quy tắc đã được xác nhận ban đầu (BR-001..BR-008) | Lưu trữ |
+| 1.1 | 2026-10-13 | Đồng bộ 13 tiêu chí thi đua chuẩn hóa (BR-009) & bảo vệ tâm lý điểm âm (BR-010) theo SRS v1.0 | Đang áp dụng chính thức |
+

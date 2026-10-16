@@ -2,6 +2,7 @@
 import React from 'react';
 import { Student } from '../types';
 import { RESEARCH_METRICS } from '../data/studentsData';
+import { fetchResearchMetricsFromBackend } from '../services/api';
 import { 
   FileText, 
   Printer, 
@@ -20,8 +21,40 @@ interface ResearchReportViewProps {
 }
 
 export const ResearchReportView: React.FC<ResearchReportViewProps> = ({ students }) => {
-  const trad = RESEARCH_METRICS.traditionalMethod;
-  const modern = RESEARCH_METRICS.aiClassMateMethod;
+  const [metrics, setMetrics] = React.useState<any>(RESEARCH_METRICS);
+
+  React.useEffect(() => {
+    fetchResearchMetricsFromBackend().then((data) => {
+      if (data && data.traditional_method) {
+        setMetrics({
+          traditionalMethod: {
+            auditTimeMinutes: data.traditional_method.audit_time_minutes,
+            calculationTimeMinutes: data.traditional_method.calculation_time_minutes,
+            commentTimeMinutes: data.traditional_method.comment_time_minutes,
+            totalTimeMinutes: data.traditional_method.total_time_minutes,
+            calculationErrorRate: data.traditional_method.calculation_error_rate,
+            evidenceRate: data.traditional_method.evidence_rate,
+          },
+          aiClassMateMethod: {
+            auditTimeMinutes: data.ai_classmate_method.audit_time_minutes,
+            calculationTimeMinutes: data.ai_classmate_method.calculation_time_minutes,
+            commentTimeMinutes: data.ai_classmate_method.comment_time_minutes,
+            totalTimeMinutes: data.ai_classmate_method.total_time_minutes,
+            calculationErrorRate: data.ai_classmate_method.calculation_error_rate,
+            evidenceRate: data.ai_classmate_method.evidence_rate,
+          },
+          improvement: {
+            timeSavedPercent: data.improvement.time_saved_percent,
+            errorReductionPercent: data.improvement.error_reduction_percent,
+            evidenceIncreasePercent: data.improvement.evidence_increase_percent,
+          }
+        });
+      }
+    }).catch(() => {});
+  }, []);
+
+  const trad = metrics.traditionalMethod;
+  const modern = metrics.aiClassMateMethod;
 
   const totalGifts = students.reduce((acc, s) => acc + s.auditedGifts, 0);
   const excellentList = students.filter(s => s.isExcellent);

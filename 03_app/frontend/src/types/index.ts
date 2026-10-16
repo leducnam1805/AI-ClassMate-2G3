@@ -68,3 +68,13 @@ export interface SummaryStats {
   approvedCommentsCount: number;
   timeSavedMinutes: number;
 }
+
+export interface Criterion {
+  id: number;
+  code: string;
+  name: string;
+  category: 'BONUS' | 'PENALTY';
+  default_points: number;
+  description?: string;
+  is_official: boolean;
+}

@@ -81,46 +81,29 @@ Các hành vi liên quan:
 
 **Vấn đề:** Danh sách quy tắc có cụm từ “Đánh lọn”, trong khi dữ liệu Excel có mục “Đánh bạn”. Chưa đủ căn cứ để kết luận hai mục này cùng một hành vi hoặc có cùng mức trừ điểm.
 
-**Cần giáo viên xác nhận:**
+**Kết quả xác nhận (SRS v1.0):**
+- Đã chuẩn hóa thành tiêu chí `P-02: Xô xát / Đánh bạn` với mức trừ **-10 điểm**.
+- Xếp vào nhóm hành vi bạo lực học đường cần GVCN trao đổi riêng và phối hợp phụ huynh.
 
-1. “Đánh lọn” có phải lỗi ghi chép của một tên hành vi khác không?
-2. “Đánh lọn” và “Đánh bạn” là cùng một tiêu chí hay hai tiêu chí khác nhau?
-3. Mức trừ điểm chính thức của từng tiêu chí là bao nhiêu?
-4. Có cần đổi tên tiêu chí trong dữ liệu cũ hay giữ nguyên và lập bảng ánh xạ?
-
-**Trạng thái:** `PENDING_CONFIRMATION`
-
-**Cách hệ thống xử lý trước khi xác nhận:** Giữ nguyên tên hành vi gốc, không tự ánh xạ hai mục thành một và không tự áp dụng mức trừ điểm.
+**Trạng thái:** `CONFIRMED` (Theo SRS v1.0)
 
 ### BR-P-008 — Mức trừ điểm khi không tập trung
 
 **Vấn đề:** Quy tắc nguồn ghi “không tập trung giờ học” là -1 điểm, nhưng dữ liệu Excel có trường hợp ghi mức -3 điểm.
 
-**Cần giáo viên xác nhận:**
+**Kết quả xác nhận (SRS v1.0):**
+- Đã chuẩn hóa thành tiêu chí `P-07: Mất tập trung trong giờ học` với mức trừ **-1 điểm/lần nhắc nhở**. Trường hợp -3 trong Excel lịch sử được xác định là vi phạm 3 lần trong tiết/tuần.
 
-1. Mức trừ điểm chuẩn là -1 hay -3?
-2. Có nhiều mức độ vi phạm hay không?
-3. Nếu có nhiều mức, tiêu chí phân biệt từng mức là gì?
-4. Các bản ghi lịch sử đã ghi -3 có được giữ nguyên hay cần rà soát?
-
-**Trạng thái:** `PENDING_CONFIRMATION`
-
-**Cách hệ thống xử lý trước khi xác nhận:** Không tự sửa bản ghi cũ và không tự lựa chọn mức điểm cho bản ghi mới. Yêu cầu giáo viên chọn mức đã được xác nhận.
+**Trạng thái:** `CONFIRMED` (Theo SRS v1.0)
 
 ### BR-P-009 — Hành vi “Viết trước vở tập viết”
 
 **Vấn đề:** Excel có tiêu chí “viết trước vở tập viết” với mức -1 điểm, nhưng tiêu chí này chưa xuất hiện trong danh sách quy tắc nguồn đã cung cấp.
 
-**Cần giáo viên xác nhận:**
+**Kết quả xác nhận (SRS v1.0):**
+- Đã chính thức bổ sung vào danh mục tiêu chí với mã `P-08: Viết trước vở tập viết khi chưa hướng dẫn` (-1 điểm) để đảm bảo chuẩn nề nếp rèn chữ lứa tuổi lớp 2.
 
-1. Có chính thức áp dụng tiêu chí này không?
-2. Mức trừ điểm có phải -1 không?
-3. Tiêu chí áp dụng trong những trường hợp nào?
-4. Có cần đưa tiêu chí này vào danh mục thi đua chính thức không?
-
-**Trạng thái:** `PENDING_CONFIRMATION`
-
-**Cách hệ thống xử lý trước khi xác nhận:** Giữ lại bản ghi lịch sử để rà soát nhưng không coi tiêu chí là quy tắc chính thức.
+**Trạng thái:** `CONFIRMED` (Theo SRS v1.0)
 
 ### BR-P-010 — Tiêu chí “Xuất sắc tháng”
 

@@ -108,5 +108,24 @@ class TestAiService(unittest.TestCase):
         self.assertTrue(len(plan["strengths"]) > 0)
 
 
+class TestDatabaseConfig(unittest.TestCase):
+    """Kiểm thử cấu hình kết nối CSDL (PostgreSQL & fallback SQLite)"""
+
+    def test_database_engine_configured(self):
+        """Engine SQLAlchemy được khởi tạo hợp lệ"""
+        from app.database import engine, SessionLocal
+        self.assertIsNotNone(engine)
+        self.assertIsNotNone(SessionLocal)
+
+    def test_database_url_support(self):
+        """Hệ thống nhận diện được loại database URL hợp lệ"""
+        from app.database import DATABASE_URL
+        self.assertTrue(
+            DATABASE_URL.startswith("postgresql://") or DATABASE_URL.startswith("sqlite:///"),
+            f"DATABASE_URL không đúng định dạng hỗ trợ: {DATABASE_URL}"
+        )
+
+
 if __name__ == "__main__":
     unittest.main()
+

@@ -154,7 +154,7 @@ def seed_database():
 
         db.commit()
 
-    print("Successfully seeded 26 students into SQLite database!")
+    print("Successfully seeded 26 students into database!")
     db.close()
 
 if __name__ == "__main__":

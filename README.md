@@ -36,7 +36,7 @@ AI-ClassMate-2G3/
     ├── 📁 backend/                 # 🐍 Python FastAPI Backend (Cổng 8000)
     │   ├── app/
     │   │   ├── main.py             # Điểm khởi động FastAPI & cấu hình CORS
-    │   │   ├── database.py         # Kết nối SQLite (SQLAlchemy)
+    │   │   ├── database.py         # Kết nối PostgreSQL (hỗ trợ fallback SQLite)
     │   │   ├── models.py           # ORM models (8 bảng dữ liệu)
     │   │   ├── schemas.py          # Pydantic schemas kiểm tra dữ liệu
     │   │   ├── seed.py             # Nạp dữ liệu 26 học sinh vào database
@@ -44,8 +44,8 @@ AI-ClassMate-2G3/
     │   │       ├── audit_service.py    # Kiểm toán quy tắc BR-001..BR-008
     │   │       └── ai_service.py       # Sinh nhận xét AI & kế hoạch giáo dục
     │   ├── run.py                  # Entrypoint chạy server
-    │   ├── requirements.txt        # Danh sách thư viện Python
-    │   └── classmate.db            # Database SQLite (tự tạo khi chạy lần đầu)
+    │   ├── requirements.txt        # Danh sách thư viện Python (FastAPI, SQLAlchemy, psycopg2-binary)
+    │   └── classmate.db            # Database SQLite (chế độ fallback ngoại tuyến)
     │
     └── 📁 frontend/                # ⚛️ Next.js Frontend (Cổng 3000)
         └── src/
@@ -71,26 +71,29 @@ AI-ClassMate-2G3/
 
 ---
 
-## 🏗️ Kiến trúc phân tán (Decoupled Architecture)
+## 🏗️ Kiến trúc phân tán (Decoupled Architecture with PostgreSQL)
 
 ```
 ┌─────────────────────────────┐        HTTP REST API        ┌─────────────────────────────┐
 │       FRONTEND               │   ─────────────────────►   │        BACKEND               │
 │   Next.js + TypeScript       │        Port 8000            │   Python FastAPI             │
 │   Tailwind CSS               │   ◄─────────────────────   │   SQLAlchemy ORM             │
-│   Port 3000                  │        JSON Response        │   SQLite Database            │
+│   Port 3000                  │        JSON Response        │   Port 8000                  │
 │   http://localhost:3000      │                             │   http://localhost:8000      │
 └─────────────────────────────┘                             └──────────────┬──────────────┘
                                                                            │
                                                             ┌──────────────▼──────────────┐
-                                                            │     SQLite: classmate.db     │
-                                                            │  8 bảng quan hệ             │
-                                                            │  classes, students,          │
-                                                            │  criteria, behavior_events,  │
-                                                            │  monthly_summaries,          │
-                                                            │  ai_comments,                │
-                                                            │  review_issues,              │
-                                                            │  audit_logs                  │
+                                                            │   PostgreSQL 16 Database    │
+                                                            │   (Docker container: 5432)  │
+                                                            │  8 bảng quan hệ:            │
+                                                            │  • classes                  │
+                                                            │  • students                 │
+                                                            │  • criteria                 │
+                                                            │  • behavior_events          │
+                                                            │  • monthly_summaries        │
+                                                            │  • ai_comments              │
+                                                            │  • review_issues            │
+                                                            │  • audit_logs               │
                                                             └─────────────────────────────┘
 ```
 
@@ -102,28 +105,24 @@ AI-ClassMate-2G3/
 
 | Phần mềm | Phiên bản khuyến nghị |
 |---|---|
-| **Python** | 3.11+ |
-| **Node.js** | 20 LTS+ |
-| **npm** | 10+ |
-| **Git** | 2.x |
+| **Docker & Docker Compose** | Docker 24+ / Compose v2+ (Khuyến nghị hàng đầu) |
+| **Python** | 3.11+ (Nếu chạy thủ công) |
+| **Node.js** | 20 LTS+ (Nếu chạy thủ công) |
+| **PostgreSQL** | 15+ hoặc 16 (Hoặc dùng tự động qua Docker) |
 
 ---
 
-### Bước 1: Clone dự án
+### 🐳 Cách 1: Khởi chạy toàn bộ hệ thống bằng Docker (Khuyến nghị chuẩn)
+
+Hệ thống đã được đóng gói toàn diện với 3 service:
+1. **`postgres`** (PostgreSQL 16 Alpine, Port 5432)
+2. **`backend`** (FastAPI, Port 8000, tự động kết nối và nạp dữ liệu vào PostgreSQL)
+3. **`frontend`** (Next.js 16, Port 3000)
+
+Chỉ cần **1 lệnh duy nhất**:
 
 ```bash
-git clone <repo-url>
-cd AI-ClassMate-2G3
-```
-
----
-
-### 🐳 Cách 1: Khởi chạy nhanh bằng Docker (Khuyến nghị cho máy khác clone về)
-
-Nếu máy tính đã cài đặt **Docker Desktop** (hoặc Docker Engine & Compose), bạn chỉ cần chạy **một lệnh duy nhất** mà không cần cài đặt Python hay Node.js:
-
-```bash
-# Khởi động cả Backend và Frontend cùng lúc
+# Khởi động PostgreSQL, Backend và Frontend cùng lúc
 docker compose up --build
 ```
 
@@ -132,10 +131,17 @@ Hoặc chạy ngầm dưới nền:
 docker compose up -d --build
 ```
 
+Kiểm tra trạng thái các container:
+```bash
+docker compose ps
+```
+
 Để dừng các service:
 ```bash
 docker compose down
 ```
+
+> **Ghi chú về dữ liệu:** Dữ liệu PostgreSQL được lưu trữ bền vững tại Docker volume `postgres-data`. Để reset hoàn toàn CSDL, dùng lệnh `docker compose down -v`.
 
 - **Frontend:** `http://localhost:3000`
 - **Backend API:** `http://localhost:8000`
@@ -143,38 +149,26 @@ docker compose down
 
 ---
 
-### 💻 Cách 2: Cài đặt và khởi chạy thủ công
+### 💻 Cách 2: Chạy trực tiếp trên Windows (Máy mới tinh, không cần cài trước gì cả)
 
-```bash
-# Di chuyển vào thư mục backend
-cd 03_app/backend
+Dành cho máy mới chưa có bất kỳ phần mềm nào:
 
-# Cài đặt các thư viện Python
-pip install -r requirements.txt
+1. **Bước 1: Chạy cài đặt tự động:**
+   - Nhấp đúp vào file **`install-env.bat`** (hoặc mở cmd gõ `install-env.bat`).
+   - File sẽ **tự động hoàn toàn**:
+     - Tạo file `.env` chuẩn.
+     - Tự tải & cài đặt **Python 3.11** (nếu máy chưa có).
+     - Tự tải & cài đặt **Node.js 20 LTS** (nếu máy chưa có).
+     - Tự cài đặt toàn bộ thư viện Python (FastAPI, SQLAlchemy, psycopg2...).
+     - Tự cài đặt toàn bộ thư viện Frontend (Next.js, Tailwind...).
+     - Chạy bộ 17 unit test kiểm tra hệ thống.
 
-# Chạy server (tự động khởi tạo database & seed dữ liệu 26 học sinh lần đầu)
-python run.py
-```
+2. **Bước 2: Khởi chạy dự án:**
+   - Nhấp đúp file **`run.bat`**:
+     - Tự động bật Backend (`http://localhost:8000`) & Frontend (`http://localhost:3000`).
+     - Tự động mở trình duyệt web.
 
-✅ **Backend sẵn sàng tại:** `http://localhost:8000`  
-📖 **Swagger UI (Thử API):** `http://localhost:8000/docs`
-
----
-
-### Bước 3: Khởi chạy Frontend (Next.js — Cổng 3000)
-
-```bash
-# Mở terminal mới, di chuyển vào thư mục frontend
-cd 03_app/frontend
-
-# Cài đặt các thư viện Node.js
-npm install
-
-# Chạy development server
-npm run dev
-```
-
-✅ **Frontend sẵn sàng tại:** `http://localhost:3000`
+> **Mẹo:** Ngay cả khi bạn quên chạy `install-env.bat` mà nhấp luôn `run.bat`, script sẽ tự phát hiện máy còn thiếu môi trường và tự động kích hoạt `install-env.bat` giúp bạn!
 
 ---
 
@@ -236,8 +230,10 @@ npm run dev
 ### Backend
 - **Python 3.11** — Ngôn ngữ lập trình chính
 - **FastAPI** — Framework REST API hiệu năng cao, tự sinh Swagger docs
-- **SQLAlchemy** — ORM quản lý cơ sở dữ liệu quan hệ
-- **SQLite** — Cơ sở dữ liệu nhúng, không cần cài server riêng
+- **SQLAlchemy 2.0** — ORM quản lý cơ sở dữ liệu quan hệ
+- **PostgreSQL 16** — Cơ sở dữ liệu chính chạy qua Docker container (Port 5432)
+- **psycopg2-binary** — Driver kết nối PostgreSQL hiệu năng cao
+- **SQLite** — Chế độ fallback ngoại tuyến tiện lợi khi không có Docker
 - **Pandas / Numpy** — Phân tích dữ liệu học sinh (giai đoạn tiếp theo)
 - **Uvicorn** — ASGI server
 

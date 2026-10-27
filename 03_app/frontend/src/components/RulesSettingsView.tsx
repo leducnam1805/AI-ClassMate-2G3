@@ -126,7 +126,7 @@ export const RulesSettingsView: React.FC = () => {
         <div className="flex items-center justify-between">
           <h2 className="text-sm font-bold text-slate-800 flex items-center">
             <Database className="w-4 h-4 mr-1.5 text-indigo-600" />
-            Danh Mục Tiêu Chí Thi Đua (Dữ Liệu Thật từ Database SQLite — Bảng criteria):
+            Danh Mục Tiêu Chí Thi Đua (Dữ Liệu Thật từ Database — Bảng criteria):
           </h2>
           <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-indigo-50 text-indigo-700 border border-indigo-200">
             {criteria.length > 0 ? `${criteria.length} Tiêu chí Đã nạp từ DB` : 'Dữ liệu chuẩn hóa SRS v1.0'}

@@ -36,16 +36,17 @@ def on_startup():
 
 @app.get("/api/health")
 def health_check():
+    db_type = "PostgreSQL" if "postgresql" in str(engine.url) else "SQLite"
     return {
         "status": "OK",
         "service": "AI ClassMate 2G3 Backend",
-        "database": "SQLite (classmate.db)",
+        "database": f"{db_type} ({engine.url.database or 'classmate'})",
         "version": "1.0.0"
     }
 
 @app.get("/api/criteria", response_model=List[CriterionSchema])
 def get_criteria(db: Session = Depends(get_db)):
-    """Trả về 13 tiêu chí thi đua đã được lưu trong cơ sở dữ liệu SQLite"""
+    """Trả về 13 tiêu chí thi đua đã được lưu trong cơ sở dữ liệu"""
     return db.query(CriterionModel).order_by(CriterionModel.id.asc()).all()
 
 @app.get("/api/students", response_model=List[StudentListResponse])

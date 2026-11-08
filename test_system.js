@@ -183,7 +183,7 @@ runTest('Backend requirements.txt chứa psycopg2-binary cho PostgreSQL', () => 
   assert.ok(content.includes('psycopg2-binary'), 'Phải có psycopg2-binary trong requirements');
 });
 
-runTest('Backend database.py hỗ trợ linh hoạt PostgreSQL và SQLite fallback', () => {
+runTest('Backend database.py kết nối chuẩn xác PostgreSQL theo kiến trúc Docker', () => {
   const dbCodePath = path.resolve(__dirname, '03_app/backend/app/database.py');
   assert.strictEqual(fs.existsSync(dbCodePath), true, 'File database.py phải tồn tại');
   const content = fs.readFileSync(dbCodePath, 'utf8');

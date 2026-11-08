@@ -72,7 +72,7 @@ winget install -e --id Docker.DockerDesktop --accept-source-agreements --accept-
 if %ERRORLEVEL% EQU 0 (
     echo  [✓] Đã cài xong Docker Desktop!
 ) else (
-    echo  [INFO] Bỏ qua cài Docker tự động (có thể tải tại https://www.docker.com/products/docker-desktop/)
+    echo  [INFO] Bo qua cai Docker tu dong.
 )
 
 :PYTHON_CHECK

@@ -47,7 +47,7 @@ export default function Home() {
       setSelectedStudent(updatedStudent);
     }
 
-    // 2. Persist to Backend API (SQLite)
+    // 2. Persist to Backend API (PostgreSQL via Docker)
     await updateStudentInBackend(updatedStudent.id, {
       audited_bonus: updatedStudent.auditedBonus,
       audited_penalty: updatedStudent.auditedPenalty,
@@ -83,7 +83,7 @@ export default function Home() {
           </span>
         </div>
         <div className="flex items-center space-x-3 text-[11px]">
-          <span>Database: <strong className="text-indigo-600">PostgreSQL / SQLite</strong></span>
+          <span>Database: <strong className="text-indigo-600">PostgreSQL (Docker)</strong></span>
           <span>•</span>
           <span className="text-emerald-700 font-semibold bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
             {isBackendConnected ? '✓ Kết nối API thành công' : 'Đang đồng bộ API'}

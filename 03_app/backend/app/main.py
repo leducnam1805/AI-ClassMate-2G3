@@ -36,11 +36,10 @@ def on_startup():
 
 @app.get("/api/health")
 def health_check():
-    db_type = "PostgreSQL" if "postgresql" in str(engine.url) else "SQLite"
     return {
         "status": "OK",
         "service": "AI ClassMate 2G3 Backend",
-        "database": f"{db_type} ({engine.url.database or 'classmate'})",
+        "database": f"PostgreSQL ({engine.url.database or 'classmate_db'})",
         "version": "1.0.0"
     }
 
